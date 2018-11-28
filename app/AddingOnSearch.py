@@ -1,13 +1,12 @@
 import time
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
-import app.PageObjects as PageObjects
-from selenium.webdriver.support.wait import WebDriverWait
+import app.other.PageObjects as PageObjects
 from collections import deque
-import app.Helper as Helper
+import app.other.Helper as Helper
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.common.exceptions import NoSuchElementException, \
-    TimeoutException, WebDriverException, StaleElementReferenceException
+    WebDriverException
 
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait

@@ -1,17 +1,15 @@
+import sys
 import time
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
-import app.PageObjects as PageObjects
-from selenium.webdriver.support.wait import WebDriverWait
+import app.other.PageObjects as PageObjects
 from collections import deque
-import app.Helper as Helper
+import app.other.Helper as Helper
+from random import randint
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.common.exceptions import NoSuchElementException, \
-    TimeoutException, WebDriverException, StaleElementReferenceException
+    WebDriverException
 
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as ec
 import logging
 
 
@@ -24,7 +22,8 @@ class StartWorker:
         self.__skipp_elements = deque(maxlen=5)
 
     def start(self):
-        self.driver = webdriver.Chrome()
+        self.driver = webdriver.Chrome(
+            executable_path='../driver/chromedriver')
         self.driver.maximize_window()
 
         self.driver.get(PageObjects.LINK_BASE)
@@ -75,18 +74,47 @@ class StartWorker:
                 continue
 
             StartWorker.waite_add_connect()
+
             try:
                 ActionChains(self.driver) \
                     .move_to_element(connect).click().perform()
             except (NoSuchElementException, WebDriverException) as e:
-                logging.error("Error on Adding: {}".format(str(e)))
+                logging.error("Error on Adding: {}! Waiting some time..."
+                              .format(str(e)))
+
+    def __check_block_state(self):
+        StartWorker.waite_add_connect()
+        try:
+            dialog = self.driver.find_element_by_xpath(
+                PageObjects.BUTTON_R_CONNECT_BLOCK)
+            if dialog.is_displayed:
+                StartWorker.waite_block_state()
+        except (NoSuchElementException, WebDriverException):
+            pass
 
     @staticmethod
     def waite_add_connect():
         time.sleep(0.5)
 
+    @staticmethod
+    def waite_block_state():
+        time.sleep(randint(20,30))
+
+
+def main(argv):
+    worker = StartWorker()
+
+    try:
+        StartWorker().start().to_recommend() \
+            .follow_actions()
+    except (NoSuchElementException, WebDriverException) as e:
+        logging.error('Error running main Task: {}! Reschedule.'
+                      .format(str(e)))
+        worker.driver.close()
+        main(argv)
+
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO)
-    StartWorker().start().to_recommend() \
-        .follow_actions()
+    sys.setrecursionlimit(100100)
+    main(sys.argv)
