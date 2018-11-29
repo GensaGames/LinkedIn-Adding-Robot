@@ -38,7 +38,7 @@ class StartWorker:
         return self
 
     def follow_actions(self):
-        logging.info('Start Working Actions!')
+        logging.info('Start Following Actions!')
         for _ in range(0, StartWorker.ITER_TO_RELOAD):
             self.__call_pagination()
             self.__add_connections()
@@ -47,6 +47,8 @@ class StartWorker:
             .follow_actions()
 
     def __call_pagination(self):
+        logging.info('Calling pagination Now...')
+
         ActionChains(self.driver) \
             .send_keys(Keys.END).perform()
         StartWorker.waite_scroll_pagination()
@@ -78,17 +80,29 @@ class StartWorker:
             try:
                 ActionChains(self.driver) \
                     .move_to_element(connect).click().perform()
+                logging.info('Working Element...')
+                self.__check_block_state()
+
             except (NoSuchElementException, WebDriverException) as e:
-                logging.error("Error on Adding: {}! Waiting some time..."
+                logging.error("Error on Adding: {}!"
                               .format(str(e)))
 
     def __check_block_state(self):
         StartWorker.waite_add_connect()
+        logging.info('Checking block State...')
+
         try:
             dialog = self.driver.find_element_by_xpath(
                 PageObjects.BUTTON_R_CONNECT_BLOCK)
+
             if dialog.is_displayed:
+                StartWorker.waite_add_connect()
+                dialog.click()
+
+                logging.info('Out of Invites. Blocked state now.\n'
+                             ' Waite some time...')
                 StartWorker.waite_block_state()
+
         except (NoSuchElementException, WebDriverException):
             pass
 
@@ -98,17 +112,19 @@ class StartWorker:
 
     @staticmethod
     def waite_block_state():
-        time.sleep(randint(20,30))
+        time.sleep(randint(20, 30))
 
 
 def main(argv):
     worker = StartWorker()
 
     try:
-        StartWorker().start().to_recommend() \
+        worker.start().to_recommend() \
             .follow_actions()
+
     except (NoSuchElementException, WebDriverException) as e:
-        logging.error('Error running main Task: {}! Reschedule.'
+        logging.error('Error running main Task: {}!\n'
+                      'Reschedule Chrome Driver!'
                       .format(str(e)))
         worker.driver.close()
         main(argv)
@@ -116,5 +132,5 @@ def main(argv):
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO)
-    sys.setrecursionlimit(100100)
+    sys.setrecursionlimit(1001001)
     main(sys.argv)

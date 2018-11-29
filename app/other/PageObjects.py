@@ -32,7 +32,8 @@ TRULA = "//*[@class='search-results-container']"
 LINK_RECOMMEND = 'https://www.linkedin.com/mynetwork/'
 
 
-BUTTON_R_CONNECT_BLOCK = "//*[@class='ddddd'] "
+BUTTON_R_CONNECT_BLOCK = "//*[@class='artdeco-button ip-fuse-limit-alert__primary-action artdeco-button--2 " \
+                         "artdeco-button--primary ember-view'] "
 
 BUTTON_R_CONNECT = "//*[@class='js-mn-discovery-person-card__action-btn " \
                    "mn-discovery-person-card__action-btn--extra-padding artdeco-button artdeco-button--1 " \
