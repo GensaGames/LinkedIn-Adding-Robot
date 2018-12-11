@@ -104,4 +104,6 @@ venv.bak/
 .mypy_cache/
 
 # Project
+.idea/
 resource/
+LinkedIn-Adding-Robot.iml
