@@ -17,7 +17,7 @@ import logging
 
 
 class StartWorker:
-    ITER_TO_RELOAD = 10
+    ITER_TO_RELOAD = 12
 
     def __init__(self):
         self.driver = None
@@ -27,10 +27,13 @@ class StartWorker:
         options = Options()
         options.headless = True
 
+        options.add_argument("--disable-gpu")
+        options.add_argument("--disable-extensions")
+        options.add_argument("--proxy-bypass-list=*")
+
         self.driver = webdriver.Chrome(
             executable_path='../driver/chromedriver',
             options=options)
-        self.driver.maximize_window()
 
         self.driver.get(PageObjects.LINK_BASE)
         return self
@@ -62,7 +65,8 @@ class StartWorker:
         logging_.info('Start Following Actions!')
         for _ in range(0, StartWorker.ITER_TO_RELOAD):
             self.__call_pagination()
-            self.__add_connections()
+
+        self.__add_connections()
 
         self.to_recommend() \
             .follow_actions()
@@ -101,7 +105,7 @@ class StartWorker:
             try:
                 ActionChains(self.driver) \
                     .move_to_element(connect).click().perform()
-                logging_.info('Working Element...')
+                logging_.info('Working Element... Clicked.')
                 self.__check_block_state()
 
             except (NoSuchElementException, WebDriverException) as e:
