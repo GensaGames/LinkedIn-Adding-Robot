@@ -17,7 +17,7 @@ import logging
 
 
 class StartWorker:
-    ITER_TO_RELOAD = 12
+    ITER_TO_RELOAD = 5
 
     def __init__(self):
         self.driver = None
@@ -25,14 +25,14 @@ class StartWorker:
 
     def start(self):
         options = Options()
-        options.headless = True
+        options.headless = False
 
         options.add_argument("--disable-gpu")
         options.add_argument("--disable-extensions")
         options.add_argument("--proxy-bypass-list=*")
 
         self.driver = webdriver.Chrome(
-            executable_path='../driver/chromedriver',
+            executable_path='../driver/chromedriver.exe',
             options=options)
 
         self.driver.get(PageObjects.LINK_BASE)
@@ -43,7 +43,7 @@ class StartWorker:
             self.driver.add_cookie(cookie)
         return self
 
-    def save_session(self):
+    def wait_save_session(self):
         StartWorker.waite_cookies_save()
 
         Helper.save_session(
@@ -53,7 +53,7 @@ class StartWorker:
 
     @staticmethod
     def waite_cookies_save():
-        time.sleep(15)
+        time.sleep(30)
 
     def to_recommend(self):
         logging_.info('Navigation to Contacts and Waite...')

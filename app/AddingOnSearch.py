@@ -1,5 +1,8 @@
+import os
+import sys
 import time
 from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.keys import Keys
 import app.other.PageObjects as PageObjects
 from collections import deque
@@ -20,8 +23,16 @@ class StartWorker:
         self.__skipp_elements = deque(maxlen=20)
 
     def start(self):
-        self.driver = webdriver.Chrome()
-        self.driver.maximize_window()
+        options = Options()
+        options.headless = False
+
+        options.add_argument("--disable-gpu")
+        options.add_argument("--disable-extensions")
+        options.add_argument("--proxy-bypass-list=*")
+
+        self.driver = webdriver.Chrome(
+            executable_path='../driver/chromedriver.exe',
+            options=options)
 
         self.driver.get(PageObjects.LINK_BASE)
         for cookie in Helper.get_session():
@@ -149,7 +160,26 @@ class StartWorker:
         self.driver.quit()
 
 
+def main(argv):
+    worker = StartWorker()
+
+    try:
+        worker.start().to_contacts() \
+            .follow_actions()
+
+    except (NoSuchElementException, WebDriverException) as e:
+        logging_.error(
+            'Error running main Task: {}!\n'
+            'Reschedule Chrome Driver!'.format(str(e)))
+
+        worker.driver.close()
+        main(argv)
+
+
 if __name__ == "__main__":
-    logging.basicConfig(level=logging.INFO)
-    StartWorker().start().to_contacts()\
-        .follow_actions()
+    logging.basicConfig(level=logging.INFO,
+                        format='%(asctime)-15s %(message)s')
+    logging_ = logging.getLogger(os.path.basename(__file__))
+
+    sys.setrecursionlimit(1001001)
+    main(sys.argv)
