@@ -17,7 +17,8 @@ def save_session(cookies):
 
 
 SESSION_NAME = 'session.txt'
-SESSION_PATH = '../resource/'
+SESSION_PATH = os.path.abspath(
+    __file__ + "/../../../resource/")
 
 
 def find_one_of(driver, *args):
@@ -37,16 +38,16 @@ def get_text_excluding_children(driver, element):
         }).text();
         """, element)
 
+
 ##########################################
 def get_session():
-    location = SESSION_PATH + SESSION_NAME
+    location = os.path.join(SESSION_PATH, SESSION_NAME)
+    logging.info('Use next location for Cookies: '
+                 + str(location))
     if not os.path.exists(location):
         return []
     with open(location, "rb") as file:
         return pickle.load(file)
 
 
-# if __name__ == "__main__":
-#     driver = webdriver.Chrome()
-#     driver.get('http://www.whatsmyua.info/')
 

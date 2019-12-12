@@ -35,8 +35,7 @@ LINK_RECOMMEND = 'https://www.linkedin.com/mynetwork/'
 BUTTON_R_CONNECT_BLOCK = "//*[@class='artdeco-button ip-fuse-limit-alert__primary-action artdeco-button--2 " \
                          "artdeco-button--primary ember-view'] "
 
-BUTTON_R_CONNECT = "//*[@class='js-discover-person-card__action-btn full-width artdeco-button artdeco-button--2 " \
-                   "artdeco-button--full artdeco-button--secondary ember-view'] "
+BUTTON_R_CONNECT = "//*[@data-control-name='invite']"
 
 
 

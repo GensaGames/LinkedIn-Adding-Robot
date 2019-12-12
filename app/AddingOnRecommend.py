@@ -1,9 +1,15 @@
 import os
 import sys
+
+print(os.path.abspath(__file__ + "/../../"))
+sys.path.insert(0, os.path.abspath(__file__ + "/../../"))
+
+
 import time
-from selenium import webdriver
-from selenium.webdriver.common.keys import Keys
 import app.other.PageObjects as PageObjects
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.chrome.options import Options
 
 from collections import deque
@@ -17,7 +23,7 @@ import logging
 
 
 class StartWorker:
-    ITER_TO_RELOAD = 5
+    ITER_TO_RELOAD = 2
 
     def __init__(self):
         self.driver = None
@@ -32,7 +38,8 @@ class StartWorker:
         options.add_argument("--proxy-bypass-list=*")
 
         self.driver = webdriver.Chrome(
-            executable_path='../driver/chromedriver.exe',
+            executable_path=os.path.abspath(
+                __file__ + "/../../driver/chromedriver-n.exe"),
             options=options)
 
         self.driver.get(PageObjects.LINK_BASE)
@@ -40,6 +47,9 @@ class StartWorker:
 
     def load_session(self):
         for cookie in Helper.get_session():
+            logging_.info('Found some cookies!')
+            if 'expiry' in cookie:
+                del cookie['expiry']
             self.driver.add_cookie(cookie)
         return self
 
@@ -91,8 +101,9 @@ class StartWorker:
         time.sleep(2 * 2)
 
     def __add_connections(self):
-        for connect in self.driver.find_elements_by_xpath(
-                PageObjects.BUTTON_R_CONNECT):
+
+        for connect in self.driver.find_elements(
+                By.XPATH, PageObjects.BUTTON_R_CONNECT):
 
             if not connect.is_displayed() or \
                     not connect.is_enabled():

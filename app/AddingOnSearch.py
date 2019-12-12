@@ -31,11 +31,13 @@ class StartWorker:
         options.add_argument("--proxy-bypass-list=*")
 
         self.driver = webdriver.Chrome(
-            executable_path='../driver/chromedriver.exe',
+            executable_path='../driver/chromedriver-n.exe',
             options=options)
 
         self.driver.get(PageObjects.LINK_BASE)
         for cookie in Helper.get_session():
+            if 'expiry' in cookie:
+                del cookie['expiry']
             self.driver.add_cookie(cookie)
         return self
 

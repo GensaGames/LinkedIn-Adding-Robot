@@ -18,17 +18,18 @@
     "default": {
         "easyprocess": {
             "hashes": [
-                "sha256:4692440229743afe2057ce26b688ea42bf3bb00eb8a4b542c8efd233f4c9c77d",
-                "sha256:94e241cadc9a46f55b5c06000df85618849602e7e1865b8de87576b90a22e61f"
+                "sha256:e1871651a3c9f192090c6f523f48bc73ba6ec651530a8c4cd7e2776a4c54d795",
+                "sha256:f757cd16cdab5b87117b4ee6cf197f99bfa109253364c7bd717ad0bcd39218a0"
             ],
-            "version": "==0.2.3"
+            "version": "==0.2.7"
         },
         "pyvirtualdisplay": {
             "hashes": [
-                "sha256:012883851a992f9c53f0dc6a512765a95cf241bdb734af79e6bdfef95c6e9982"
+                "sha256:07f50759205adaeeb255a88be0ac1dce68da80686e6ca1fc362f4aa54fdbcb5b",
+                "sha256:877f9ac9b8344d4bb8f6f4ec0db78db5dabb8f1240b692989e40a330d6fadd6e"
             ],
             "index": "pypi",
-            "version": "==0.2.1"
+            "version": "==0.2.4"
         },
         "selenium": {
             "hashes": [
@@ -40,10 +41,10 @@
         },
         "urllib3": {
             "hashes": [
-                "sha256:61bf29cada3fc2fbefad4fdf059ea4bd1b4a86d2b6d15e1c7c0b582b9752fe39",
-                "sha256:de9529817c93f27c8ccbfead6985011db27bd0ddfcdb2d86f3f663385c6a9c22"
+                "sha256:a8a318824cc77d1fd4b2bec2ded92646630d7fe8619497b142c84a9e6f5a7293",
+                "sha256:f3c5fd51747d450d4dcf6f923c81f78f811aab8205fda64b0aba34a4e48b0745"
             ],
-            "version": "==1.24.1"
+            "version": "==1.25.7"
         }
     },
     "develop": {}
